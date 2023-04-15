@@ -1,5 +1,6 @@
 var express = require('express')
 var multer = require('multer')
+const cors = require("cors")
 var mongoose = require('mongoose')
 var path = require('path')
 var bodyParser = require('body-parser')
@@ -23,6 +24,7 @@ mongoose
   .then(() => console.log('Connected'))
   .catch((err) => console.log(err))
 // app.set('view engine', 'ejs')
+app.use(cors())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(express.static(path.resolve(__dirname, 'public')))
 app.get('/', (req, res) => {
@@ -38,7 +40,8 @@ app.get('/', (req, res) => {
   })
 })
 
-app.post('/upload', upload.single('csvFile'), (req, res) => {
+app.post('/upload', upload.single('file'), (req, res) => {
+  
   csv()
     .fromFile(req?.file?.path)
     .then(async (res1) => {
