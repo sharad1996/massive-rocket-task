@@ -1,29 +1,19 @@
-var express = require('express')
-var multer = require('multer')
+const express = require('express')
+const multer = require('multer')
 const cors = require("cors")
-var mongoose = require('mongoose')
-var path = require('path')
-var bodyParser = require('body-parser')
-var csv = require('csvtojson')
-var EmpSchema = require('./models/EmpModel')
+const mongoose = require('mongoose')
+const path = require('path')
+const bodyParser = require('body-parser')
+const csv = require('csvtojson')
+const EmpSchema = require('./models/EmpModel')
 const app = express();
-var storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, './public/uploads')
-  },
-  filename: (req, file, cb) => {
 
-    cb(null, file.originalname)
-  },
-})
-// var uploads = multer({ storage: storage })
 const upload = multer({ dest: 'uploads/' })
 
 mongoose
   .connect('mongodb://localhost:27017/mydb', { useNewUrlParser: true })
   .then(() => console.log('Connected'))
   .catch((err) => console.log(err))
-// app.set('view engine', 'ejs')
 app.use(cors())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(express.static(path.resolve(__dirname, 'public')))
@@ -89,5 +79,5 @@ app.post('/upload', upload.single('file'), (req, res) => {
       })
     })
 })
-var port = process.env.PORT || 5555
+const port = process.env.PORT || 5555
 app.listen(port, () => console.log('App connected on: ' + port))
