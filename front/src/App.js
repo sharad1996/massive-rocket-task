@@ -1,7 +1,8 @@
 import { Button } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { PieChart, Pie, Cell} from 'recharts';
+import { PieChart, Pie, Cell,Tooltip} from 'recharts';
 import axios from "axios";
+import Statics from "./Statics";
 
 function App() {
   const [file, setFile] = useState("");
@@ -17,7 +18,14 @@ function App() {
     {name: 'Geek-i-knack', students: 200},
     {name: 'Geek-o-mania', students: 1000}
   ];
-  
+  const data01 = [
+    { name: "Group A", value: 400 },
+    { name: "Group B", value: 300 },
+    { name: "Group C", value: 300 },
+    { name: "Group D", value: 200 },
+    { name: "Group E", value: 278 },
+    { name: "Group F", value: 189 }
+  ];
   
   const onHandleSubmit = () => {
     console.log("=========== File ===========", file);
@@ -55,13 +63,26 @@ function App() {
   },[])
   return (
     <div className="App">
-      <PieChart width={700} height={700}>
+      <PieChart width={1000} height={400}>
+        <Pie
+          dataKey="value"
+          isAnimationActive={false}
+          data={data01}
+          cx={200}
+          cy={200}
+          outerRadius={80}
+          fill="#8884d8"
+          label
+        />
+        <Tooltip />
+    </PieChart>
+      {/* <PieChart width={700} height={700}>
           <Pie data={data} dataKey="students" outerRadius={250}>
           {data.map((entry, index) => (
               <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
             ))}
           </Pie>
-        </PieChart>
+        </PieChart> */}
       <form action="http://localhost:5555/upload" method="post" enctype="multipart/form-data">
         <input type="file" name="csvFile" />
         <Button type='submit'> Import </Button> 

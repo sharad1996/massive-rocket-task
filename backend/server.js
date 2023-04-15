@@ -65,11 +65,12 @@ app.post('/upload', upload.single('csvFile'), (req, res) => {
               duplication = duplication + 1;
             }
 
+            
             if (response.length === (index +1)) {
-              resolve({
-                duplication,
-                insert,
-              });
+              resolve([
+                {name: 'duplicate', value: duplication},
+                {name: 'insert', value: insert},
+              ]);
             }
           }
         })
@@ -78,8 +79,10 @@ app.post('/upload', upload.single('csvFile'), (req, res) => {
 
       res.status(200).json({
         message: 'Data imported',
-        total: response.length,
-        ...data
+        data: [
+          ...data,
+          {name: "total", value: response.length}
+        ]
       })
     })
 })
